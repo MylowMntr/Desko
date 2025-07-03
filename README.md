@@ -2,7 +2,7 @@
 
 ```text
 project-root/
-├── app/
+├── src/
 │   ├── routes/            # Toutes tes routes (pages + layouts)
 │   │   ├── __root.tsx     # Layout racine (obligatoire)
 │   │   ├── index.tsx      # Page d'accueil
@@ -29,41 +29,41 @@ Cette structure suit les conventions TanStack Start, tout en gardant la modulari
 
 ## Explications & bonnes pratiques :
 
-/app/routes/ :
+/src/routes/ :
 
 - Chaque fichier .tsx = une route/page.
 
 - __root.tsx = layout racine (header, sidebar, etc.), obligatoire pour TanStack Start
 
-- Pour des sous-routes, crée des sous-dossiers (ex : /app/routes/workspaces/[workspaceId].tsx).
+- Pour des sous-routes, crée des sous-dossiers (ex : /src/routes/workspaces/[workspaceId].tsx).
 
-/app/router.tsx :
+/src/router.tsx :
 
 - Configure ici ton router avec le tree généré automatiquement (routeTree.gen.ts).
 
 - Tu peux y ajouter des options globales (scrollRestoration, prefetch, etc.)
 
-/app/components/ :
+/src/components/ :
 
 - Composants UI génériques et réutilisables (boutons, inputs, modales, layouts…).
 
-/app/modules/ :
+/src/modules/ :
 
 - Par domaine métier (ex : workspaces/, widgets/), regroupe logique, composants spécifiques, hooks, types.
 
-/app/services/ :
+/src/services/ :
 
 - Fonctions pour accéder aux APIs, server functions, etc.
 
-/app/store/ :
+/src/store/ :
 
 - Gestion d’état globale (Zustand, React Query, etc.).
 
-/app/types/ :
+/src/types/ :
 
 - Types TypeScript globaux ou partagés.
 
-/app/utils/ :
+/src/utils/ :
 
 - Fonctions utilitaires pures.
 
@@ -75,7 +75,7 @@ Spécificités TanStack Start :
 
 - File-based routing :
 
-    - La structure des fichiers dans /app/routes/ définit automatiquement tes routes, avec typage fort et génération automatique du route tree
+    - La structure des fichiers dans /src/routes/ définit automatiquement tes routes, avec typage fort et génération automatique du route tree
 
 - Server functions :
 
@@ -87,14 +87,14 @@ Spécificités TanStack Start :
 
 | Dossier/Fichier       | Rôle principal                                   |
 |-----------------------|-------------------------------------------------|
-| `app/routes/`         | Pages, layouts, routing automatique             |
-| `app/components/`     | UI réutilisable (générique)                     |
-| `app/modules/`        | Logique métier modulaire (workspaces, widgets, etc.) |
-| `app/services/`       | Accès aux données, APIs, server functions       |
-| `app/store/`          | Gestion d’état globale                          |
-| `app/types/`          | Types TypeScript globaux                        |
-| `app/utils/`          | Fonctions utilitaires                           |
-| `app/router.tsx`      | Config du router, typage global                 |
+| `src/routes/`         | Pages, layouts, routing automatique             |
+| `src/components/`     | UI réutilisable (générique)                     |
+| `src/modules/`        | Logique métier modulaire (workspaces, widgets, etc.) |
+| `src/services/`       | Accès aux données, APIs, server functions       |
+| `src/store/`          | Gestion d’état globale                          |
+| `src/types/`          | Types TypeScript globaux                        |
+| `src/utils/`          | Fonctions utilitaires                           |
+| `src/router.tsx`      | Config du router, typage global                 |
 | `app.config.ts`       | Config globale du projet                        |
 | `public/`             | Fichiers statiques                              |
 

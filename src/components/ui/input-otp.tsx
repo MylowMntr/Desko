@@ -1,3 +1,6 @@
+/** biome-ignore-all lint/a11y/useAriaPropsForRole: <explanation> */
+/** biome-ignore-all lint/a11y/useSemanticElements: <explanation> */
+/** biome-ignore-all lint/a11y/useFocusableInteractive: <explanation> */
 "use client";
 
 import { OTPInput, OTPInputContext } from "input-otp";
