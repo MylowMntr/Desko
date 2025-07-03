@@ -3,6 +3,8 @@ import { useMylowDeskStore } from "@/store/appStore";
 import { WidgetRenderer } from "./WidgetRenderer";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+import { Trash2 } from "lucide-react";
+import { Button } from "../ui/button";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -15,6 +17,7 @@ export function WidgetsGrid({
 }) {
 	const workspaces = useMylowDeskStore((s) => s.workspaces);
 	const moveWidget = useMylowDeskStore((s) => s.moveWidget);
+	const removeWidget = useMylowDeskStore((s) => s.removeWidget);
 	const ws = workspaces.find((w) => w.id === workspaceId);
 
 	if (!ws) return null;
@@ -29,15 +32,19 @@ export function WidgetsGrid({
 		static: !editable, // widgets non déplaçables si pas en mode édition
 	}));
 
-	function onLayoutChange(newLayout: any[]) {
+	function onLayoutChange(
+		newLayout: { i: string; x: number; y: number; w: number; h: number }[],
+	) {
 		// Met à jour la position des widgets dans le store
 		newLayout.forEach((item) => {
-			const widget = ws.widgets.find((w) => w.id === item.i);
+			const widget = ws?.widgets.find((w) => w.id === item.i);
 			if (
 				widget &&
 				(widget.position.x !== item.x || widget.position.y !== item.y)
 			) {
-				moveWidget(ws.id, widget.id, { x: item.x, y: item.y });
+				if (ws) {
+					moveWidget(ws.id, widget.id, { x: item.x, y: item.y });
+				}
 			}
 			// (optionnel) updateWidget pour la taille (w, h)
 		});
@@ -66,8 +73,18 @@ export function WidgetsGrid({
 				>
 					{/* Optionnel : barre de drag en mode édition */}
 					{editable && (
-						<div className="drag-handle cursor-move px-2 py-1 bg-muted text-xs">
-							{widget.title}
+						<div className="flex items-center justify-between bg-muted">
+							<div className="drag-handle cursor-move px-2 py-1 bg-muted text-xs">
+								{widget.title}
+							</div>
+							<div className="flex justify-end p-1">
+								<Button
+									className="text-red-300 hover:text-red-500"
+									onClick={() => removeWidget(ws.id, widget.id)}
+								>
+									<Trash2 className="h-4 w-4" />
+								</Button>
+							</div>
 						</div>
 					)}
 					<div className="flex-1 p-2">

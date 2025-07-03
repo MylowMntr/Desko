@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Trash2 } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { useMylowDeskStore } from "@/store/appStore";
@@ -8,6 +9,7 @@ export function Sidebar() {
 	const activeId = useMylowDeskStore((s) => s.activeWorkspaceId);
 	const setActiveWorkspace = useMylowDeskStore((s) => s.setActiveWorkspace);
 	const addWorkspace = useMylowDeskStore((s) => s.addWorkspace);
+	const removeWorkspace = useMylowDeskStore((s) => s.removeWorkspace);
 
 	// Action pour créer un workspace simple
 	function handleAddWorkspace() {
@@ -39,7 +41,7 @@ export function Sidebar() {
 			<h2 className="font-bold mb-4">Workspaces</h2>
 			<ul className="flex-1 space-y-2 overflow-auto">
 				{workspaces.map((ws) => (
-					<li key={ws.id}>
+					<li key={ws.id} className="flex items-center justify-between">
 						<Link
 							to="/w/$workspaceId"
 							params={{ workspaceId: ws.id }}
@@ -49,6 +51,14 @@ export function Sidebar() {
 						>
 							{ws.name}
 						</Link>
+						<Button
+							variant="destructive"
+							size="sm"
+							onClick={() => removeWorkspace(ws.id)}
+							className="text-red-300 hover:text-red-500"
+						>
+							<Trash2 className="h-4 w-4 " />
+						</Button>
 					</li>
 				))}
 			</ul>

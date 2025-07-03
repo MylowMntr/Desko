@@ -8,7 +8,6 @@ import type { AppState, Widget, Workspace } from "@/types";
 interface MylowDeskStore extends AppState {
 	addWorkspace: (ws: Workspace) => void;
 	setActiveWorkspace: (id: string) => void;
-	removeWorkspace: (id: string) => void;
 	addWidget: (workspaceId: string, widget: Widget) => void;
 	moveWidget: (
 		workspaceId: string,
@@ -21,6 +20,8 @@ interface MylowDeskStore extends AppState {
 			state: MylowDeskStore,
 		) => Partial<MylowDeskStore> | MylowDeskStore,
 	) => void;
+	  removeWorkspace: (workspaceId: string) => void;
+  removeWidget: (workspaceId: string, widgetId: string) => void;
 }
 
 export const useMylowDeskStore = create(
@@ -42,14 +43,6 @@ export const useMylowDeskStore = create(
 					activeWorkspaceId: id,
 				})),
 
-			removeWorkspace: (id) =>
-				set((state) => {
-					const filtered = state.workspaces.filter((ws) => ws.id !== id);
-					// Si le workspace actif est supprimé, on le désactive
-					const activeWorkspaceId =
-						state.activeWorkspaceId === id ? null : state.activeWorkspaceId;
-					return { workspaces: filtered, activeWorkspaceId };
-				}),
 
 			addWidget: (workspaceId, widget) =>
 				set((state) => ({
@@ -94,6 +87,24 @@ export const useMylowDeskStore = create(
 					const next = typeof updater === "function" ? updater(state) : updater;
 					return typeof next === "object" ? next : {};
 				}),
+				removeWorkspace: (workspaceId) =>
+        set((state) => ({
+          workspaces: state.workspaces.filter((ws) => ws.id !== workspaceId),
+          activeWorkspaceId:
+            state.activeWorkspaceId === workspaceId ? null : state.activeWorkspaceId,
+        })),
+
+      removeWidget: (workspaceId, widgetId) =>
+        set((state) => ({
+          workspaces: state.workspaces.map((ws) =>
+            ws.id === workspaceId
+              ? {
+                  ...ws,
+                  widgets: ws.widgets.filter((w) => w.id !== widgetId),
+                }
+              : ws
+          ),
+        })),
 		}),
 		{
 			name: "mylowdesk-storage", // clé localStorage
