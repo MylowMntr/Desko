@@ -1,8 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AddWidgetModal } from "@/components/widgets/AddWidgetModal";
-import { WidgetRenderer } from "@/components/widgets/WidgetRenderer";
+import { AddWidgetModal, WidgetsGrid } from "@/components/widgets/";
 import { useMylowDeskStore } from "@/store/appStore";
 
 export const Route = createFileRoute("/w/$workspaceId")({
@@ -15,9 +14,9 @@ function WorkspacePage() {
 	const workspaces = useMylowDeskStore((s) => s.workspaces);
 	const activeWs = workspaces.find((ws) => ws.id === workspaceId);
 	const [showModal, setShowModal] = useState(false);
+	const [editable, setEditable] = useState(false);
 	const navigate = useNavigate();
 
-	// Synchronise l’état global avec l’URL
 	useEffect(() => {
 		if (activeWs) setActiveWorkspace(workspaceId);
 		else if (workspaces.length) navigate({ to: "/" });
@@ -27,16 +26,13 @@ function WorkspacePage() {
 
 	return (
 		<div>
-			<div className="mb-4 flex justify-end">
+			<div className="mb-4 flex justify-between">
+				<Button onClick={() => setEditable((e) => !e)}>
+					{editable ? "Verrouiller la grille" : "Éditer la grille"}
+				</Button>
 				<Button onClick={() => setShowModal(true)}>+ Ajouter un widget</Button>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-				{activeWs.widgets.map((widget) => (
-					<div key={widget.id} className="bg-card p-2 rounded shadow h-40">
-						<WidgetRenderer widget={widget} />
-					</div>
-				))}
-			</div>
+			<WidgetsGrid workspaceId={activeWs.id} editable={editable} />
 			<AddWidgetModal
 				open={showModal}
 				onOpenChange={setShowModal}

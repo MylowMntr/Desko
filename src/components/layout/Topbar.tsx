@@ -1,8 +1,20 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useMylowDeskStore } from "@/store/appStore";
 
 export function TopBar() {
+	const [dark, setDark] = useState(() => {
+		// Par défaut, détecte le thème système
+		return (
+			typeof window !== "undefined" &&
+			window.matchMedia("(prefers-color-scheme: dark)").matches
+		);
+	});
+
+	useEffect(() => {
+		document.documentElement.classList.toggle("dark", dark);
+	}, [dark]);
+
 	const activeId = useMylowDeskStore((s) => s.activeWorkspaceId);
 	const workspaces = useMylowDeskStore((s) => s.workspaces);
 	const activeWs = workspaces.find((ws) => ws.id === activeId);
@@ -39,17 +51,22 @@ export function TopBar() {
 				{activeWs ? activeWs.name : "MylowDesk"}
 			</h1>
 			<div className="flex space-x-2">
-				<Button variant="outline" onClick={handleImportClick}>
-					Importer JSON
+				<div>
+					<Button variant="outline" onClick={handleImportClick}>
+						Importer JSON
+					</Button>
+					{/* Input caché pour importer */}
+					<input
+						type="file"
+						accept="application/json"
+						ref={fileInputRef}
+						onChange={handleFileChange}
+						className="hidden"
+					/>
+				</div>
+				<Button variant="ghost" className="" onClick={() => setDark((d) => !d)}>
+					{dark ? "☀️" : "🌙"}
 				</Button>
-				{/* Input caché pour importer */}
-				<input
-					type="file"
-					accept="application/json"
-					ref={fileInputRef}
-					onChange={handleFileChange}
-					className="hidden"
-				/>
 			</div>
 		</header>
 	);

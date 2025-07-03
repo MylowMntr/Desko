@@ -2,10 +2,10 @@
 /// <reference types="vite/client" />
 
 import {
-    createRootRoute,
-    HeadContent,
-    Outlet,
-    Scripts,
+	createRootRoute,
+	HeadContent,
+	Outlet,
+	Scripts,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { Sidebar, TopBar } from "@/components/layout";
@@ -22,7 +22,7 @@ export const Route = createRootRoute({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "MylowDesk",
 			},
 		],
 		links: [

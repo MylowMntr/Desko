@@ -4,5 +4,8 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.biome": "explicit"
     },
-    "prettier.enable": false
+    "prettier.enable": false,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "biomejs.biome"
+    }
 }
