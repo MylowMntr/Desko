@@ -3,15 +3,25 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { useMylowDeskStore } from "@/store/appStore";
 import type { WidgetType } from "@/types";
+import { Label } from "../ui/label";
 
 interface Props {
 	open: boolean;
@@ -60,19 +70,25 @@ export function AddWidgetModal({ open, onOpenChange, workspaceId }: Props) {
 					<DialogTitle>Ajouter un widget</DialogTitle>
 				</DialogHeader>
 				<div className="space-y-2">
-					<label className="block">
-						Type&nbsp;:
-						<select
-							value={type}
-							onChange={(e) => setType(e.target.value as WidgetType)}
-							className="ml-2"
-						>
-							<option value="iframe">Iframe</option>
-							<option value="note">Note</option>
-							<option value="link">Lien</option>
-							<option value="script">Script</option>
-						</select>
-					</label>
+					<Label className="block">Type :</Label>
+
+					<Select
+						onValueChange={(value) => setType(value as WidgetType)}
+						value={type}
+					>
+						<SelectTrigger className="w-[180px]">
+							<SelectValue placeholder="Select a type" />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectGroup>
+								<SelectLabel>Type</SelectLabel>
+								<SelectItem value="iframe">Iframe</SelectItem>
+								<SelectItem value="note">Note</SelectItem>
+								<SelectItem value="link">Link</SelectItem>
+								<SelectItem value="script">Script</SelectItem>
+							</SelectGroup>
+						</SelectContent>
+					</Select>
 					<Input
 						placeholder="Titre"
 						value={title}
