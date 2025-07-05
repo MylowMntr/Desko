@@ -20,8 +20,8 @@ interface MylowDeskStore extends AppState {
 			state: MylowDeskStore,
 		) => Partial<MylowDeskStore> | MylowDeskStore,
 	) => void;
-	  removeWorkspace: (workspaceId: string) => void;
-  removeWidget: (workspaceId: string, widgetId: string) => void;
+	removeWorkspace: (workspaceId: string) => void;
+  	removeWidget: (workspaceId: string, widgetId: string) => void;
 	renameWorkspace: (workspaceId: string, newName: string) => void;
 }
 
@@ -74,14 +74,14 @@ export const useMylowDeskStore = create(
 					),
 				})),
 
-			updateWidget: (workspaceId, widget) =>
+			updateWidget: (workspaceId: string, widget: Widget) => 				
 				set((state) => ({
 					workspaces: state.workspaces.map((ws) =>
 						ws.id === workspaceId
 							? {
 									...ws,
-									widgets: ws.widgets.map((w) =>
-										w.id === widget.id ? widget : w,
+									widgets: ws.widgets.map((w: Widget) =>
+										w.id === widget.id ? { ...w, ...widget } : w,
 									),
 								}
 							: ws,

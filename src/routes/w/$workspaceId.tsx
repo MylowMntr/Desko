@@ -10,18 +10,20 @@ export const Route = createFileRoute("/w/$workspaceId")({
 
 function WorkspacePage() {
 	const { workspaceId } = Route.useParams();
-	const { editable } = useWorkspaceContext();
-	const setActiveWorkspace = useMylowDeskStore((s) => s.setActiveWorkspace);
+	const { editable, setActiveWorkspace } = useWorkspaceContext();
+	const setTheActiveWorkspace = useMylowDeskStore((s) => s.setActiveWorkspace);
 	const workspaces = useMylowDeskStore((s) => s.workspaces);
 	const activeWs = workspaces.find((ws) => ws.id === workspaceId);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (activeWs) setActiveWorkspace(workspaceId);
+		if (activeWs) setTheActiveWorkspace(workspaceId);
 		else if (workspaces.length) navigate({ to: "/" });
-	}, [workspaceId, activeWs, setActiveWorkspace, workspaces, navigate]);
+	}, [workspaceId, activeWs, setTheActiveWorkspace, workspaces, navigate]);
 
 	if (!activeWs) return <div>Workspace introuvable.</div>;
+
+	setActiveWorkspace(activeWs);
 
 	return (
 		<div>

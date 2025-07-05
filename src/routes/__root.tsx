@@ -38,10 +38,20 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+	function getCookie(name: string): string | null {
+		if (typeof window !== "undefined" && document.cookie !== "") {
+			const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
+			if (match) {
+				return match[2];
+			}
+		}
+		return null;
+	}
+	const defaultOpen = getCookie("sidebar_state") === "true";
 	return (
 		<RootDocument>
 			<WorkspaceProvider>
-				<SidebarProvider>
+				<SidebarProvider defaultOpen={defaultOpen}>
 					<AppSidebar />
 					<div className="flex min-h-screen w-full bg-background text-foreground">
 						<div className="flex-1 flex flex-col">
