@@ -1,6 +1,4 @@
-// /src/types/widget.ts
-
-export type WidgetType = "iframe" | "note" | "link" | "script";
+export type WidgetType = "iframe" | "note" | "todo" | "counter" | "clock";
 
 export interface WidgetBase {
   id: string;
@@ -12,32 +10,28 @@ export interface WidgetBase {
 
 export interface IframeWidget extends WidgetBase {
   type: "iframe";
-  config: {
-    url: string;
-  };
+  config: { url: string };
 }
-
 export interface NoteWidget extends WidgetBase {
   type: "note";
-  config: {
-    content: string;
-  };
+  config: { content: string };
+}
+export interface TodoWidget extends WidgetBase {
+  type: "todo";
+  config: { items: { id: string; text: string; done: boolean }[] };
+}
+export interface CounterWidget extends WidgetBase {
+  type: "counter";
+  config: { value: number };
+}
+export interface ClockWidget extends WidgetBase {
+  type: "clock";
+  config: { timezone?: string }; // optionnel
 }
 
-export interface LinkWidget extends WidgetBase {
-  type: "link";
-  config: {
-    url: string;
-    label: string;
-  };
-}
-
-export interface ScriptWidget extends WidgetBase {
-  type: "script";
-  config: {
-    code: string;
-  };
-}
-
-// Discriminated union pour tous les widgets
-export type Widget = IframeWidget | NoteWidget | LinkWidget | ScriptWidget;
+export type Widget =
+  | IframeWidget
+  | NoteWidget
+  | TodoWidget
+  | CounterWidget
+  | ClockWidget;

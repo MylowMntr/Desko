@@ -1,3 +1,4 @@
+import { Grid, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -35,11 +36,17 @@ export function TopBar() {
 						<>
 							<span>{activeWs.name}</span>
 							<div className="flex items-center space-x-2">
-								<Button onClick={() => setEditable((e) => !e)}>
-									{editable ? "Verrouiller la grille" : "Éditer la grille"}
+								<Button
+									onClick={() => setEditable((e) => !e)}
+									className={editable ? "bg-success" : ""}
+								>
+									<Grid />
+									<span>
+										{editable ? "Verrouiller la grille" : "Éditer la grille"}
+									</span>
 								</Button>
 								<Button onClick={() => setShowModal(true)}>
-									+ Ajouter un widget
+									<Plus /> <span>Ajouter un widget</span>
 								</Button>
 							</div>
 							<AddWidgetModal

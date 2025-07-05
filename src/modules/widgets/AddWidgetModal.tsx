@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: false positive */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { useMylowDeskStore } from "@/store/appStore";
 import type { WidgetType } from "@/types";
+import { widgetDefinitions } from "./definitions";
 
 interface Props {
 	open: boolean;
@@ -32,36 +33,39 @@ interface Props {
 export function AddWidgetModal({ open, onOpenChange, workspaceId }: Props) {
 	const addWidget = useMylowDeskStore((s) => s.addWidget);
 
-	const [type, setType] = useState<WidgetType>("iframe");
+	const widgetTypes = Object.keys(widgetDefinitions) as WidgetType[];
+	const [type, setType] = useState<WidgetType>(widgetTypes[0]);
 	const [title, setTitle] = useState("");
-	const [url, setUrl] = useState("");
-	const [content, setContent] = useState("");
-	const [label, setLabel] = useState("");
-	const [code, setCode] = useState("");
+	// Stocke dynamiquement la config selon le type
+	const [config, setConfig] = useState<any>(
+		widgetDefinitions[type].initialConfig,
+	);
+
+	// Quand on change de type, on reset la config
+	function handleTypeChange(newType: WidgetType) {
+		setType(newType);
+		setConfig(widgetDefinitions[newType].initialConfig);
+	}
+
+	function handleFieldChange(key: string, value: string) {
+		setConfig((prev: any) => ({ ...prev, [key]: value }));
+	}
 
 	function handleAdd() {
-		let config: any = {};
-		if (type === "iframe") config = { url };
-		if (type === "note") config = { content };
-		if (type === "link") config = { url, label };
-		if (type === "script") config = { code };
-
 		addWidget(workspaceId, {
 			id: uuidv4(),
 			type,
-			title: title || "Widget",
+			title: title || widgetDefinitions[type].label,
 			position: { x: 0, y: 0 },
 			size: { w: 4, h: 4 },
 			config,
 		});
 		onOpenChange(false);
-		// Reset form
 		setTitle("");
-		setUrl("");
-		setContent("");
-		setLabel("");
-		setCode("");
+		setConfig(widgetDefinitions[type].initialConfig);
 	}
+
+	const fields = widgetDefinitions[type].fields;
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
@@ -71,21 +75,18 @@ export function AddWidgetModal({ open, onOpenChange, workspaceId }: Props) {
 				</DialogHeader>
 				<div className="space-y-2">
 					<Label className="block">Type :</Label>
-
-					<Select
-						onValueChange={(value) => setType(value as WidgetType)}
-						value={type}
-					>
+					<Select value={type} onValueChange={handleTypeChange}>
 						<SelectTrigger className="w-[180px]">
-							<SelectValue placeholder="Select a type" />
+							<SelectValue placeholder="Choisir un type" />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectGroup>
 								<SelectLabel>Type</SelectLabel>
-								<SelectItem value="iframe">Iframe</SelectItem>
-								<SelectItem value="note">Note</SelectItem>
-								<SelectItem value="link">Link</SelectItem>
-								<SelectItem value="script">Script</SelectItem>
+								{widgetTypes.map((t) => (
+									<SelectItem key={t} value={t}>
+										{widgetDefinitions[t].label}
+									</SelectItem>
+								))}
 							</SelectGroup>
 						</SelectContent>
 					</Select>
@@ -94,41 +95,25 @@ export function AddWidgetModal({ open, onOpenChange, workspaceId }: Props) {
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
 					/>
-					{type === "iframe" && (
-						<Input
-							placeholder="URL"
-							value={url}
-							onChange={(e) => setUrl(e.target.value)}
-						/>
-					)}
-					{type === "note" && (
-						<Input
-							placeholder="Contenu"
-							value={content}
-							onChange={(e) => setContent(e.target.value)}
-						/>
-					)}
-					{type === "link" && (
-						<>
-							<Input
-								placeholder="URL"
-								value={url}
-								onChange={(e) => setUrl(e.target.value)}
-							/>
-							<Input
-								placeholder="Label (optionnel)"
-								value={label}
-								onChange={(e) => setLabel(e.target.value)}
-							/>
-						</>
-					)}
-					{type === "script" && (
-						<Input
-							placeholder="Code (non exécutable)"
-							value={code}
-							onChange={(e) => setCode(e.target.value)}
-						/>
-					)}
+					{fields.map((field) => (
+						<div key={field.key}>
+							<Label>{field.label}</Label>
+							{field.type === "textarea" ? (
+								<textarea
+									className="w-full border rounded px-2 py-1"
+									placeholder={field.placeholder}
+									value={config[field.key] || ""}
+									onChange={(e) => handleFieldChange(field.key, e.target.value)}
+								/>
+							) : (
+								<Input
+									placeholder={field.placeholder}
+									value={config[field.key] || ""}
+									onChange={(e) => handleFieldChange(field.key, e.target.value)}
+								/>
+							)}
+						</div>
+					))}
 				</div>
 				<DialogFooter>
 					<Button onClick={handleAdd}>Ajouter</Button>

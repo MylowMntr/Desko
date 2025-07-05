@@ -27,7 +27,7 @@ interface MylowDeskStore extends AppState {
 
 export const useMylowDeskStore = create(
 	persist<MylowDeskStore>(
-		(set, get) => ({
+		(set) => ({
 			// --- State initial ---
 			workspaces: [],
 			activeWorkspaceId: null,
