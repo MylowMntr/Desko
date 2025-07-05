@@ -90,17 +90,16 @@ export function AppSidebar() {
 									className="flex items-center justify-between"
 								>
 									<SidebarMenuButton asChild>
-										<div className="flex items-center justify-between w-full">
-											<Link
-												to="/w/$workspaceId"
-												params={{ workspaceId: ws.id }}
-												className={`block rounded px-2 py-1 ${
-													ws.id === activeId ? "text-primary" : ""
-												}`}
-											>
-												{ws.name}
-											</Link>
-											<div>
+										<Link
+											to="/w/$workspaceId"
+											params={{ workspaceId: ws.id }}
+											className={`w-full flex flex-row items-center justify-between ${
+												ws.id === activeId ? "text-primary" : ""
+											}`}
+										>
+											{ws.name}
+
+											<div className="">
 												<Button
 													variant="ghost"
 													size="icon"
@@ -126,7 +125,7 @@ export function AppSidebar() {
 													<Trash2 className="h-4 w-4" />
 												</Button>
 											</div>
-										</div>
+										</Link>
 									</SidebarMenuButton>
 								</SidebarMenuItem>
 							))}
