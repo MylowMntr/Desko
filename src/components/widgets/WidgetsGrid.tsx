@@ -1,4 +1,4 @@
-import { Responsive, WidthProvider } from "react-grid-layout";
+import GridLayout, { WidthProvider } from "react-grid-layout";
 import { useMylowDeskStore } from "@/store/appStore";
 import { WidgetRenderer } from "./WidgetRenderer";
 import "react-grid-layout/css/styles.css";
@@ -6,7 +6,9 @@ import "react-resizable/css/styles.css";
 import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 
-const ResponsiveGridLayout = WidthProvider(Responsive);
+import "@/styles/react-grid.css";
+
+const ReactGridLayout = WidthProvider(GridLayout);
 
 export function WidgetsGrid({
 	workspaceId,
@@ -18,6 +20,7 @@ export function WidgetsGrid({
 	const workspaces = useMylowDeskStore((s) => s.workspaces);
 	const moveWidget = useMylowDeskStore((s) => s.moveWidget);
 	const removeWidget = useMylowDeskStore((s) => s.removeWidget);
+	const updateWidget = useMylowDeskStore((s) => s.updateWidget);
 	const ws = workspaces.find((w) => w.id === workspaceId);
 
 	if (!ws) return null;
@@ -46,23 +49,28 @@ export function WidgetsGrid({
 					moveWidget(ws.id, widget.id, { x: item.x, y: item.y });
 				}
 			}
-			// (optionnel) updateWidget pour la taille (w, h)
+			//  updateWidget pour la taille (w, h)
+			if (widget && (widget.size.w !== item.w || widget.size.h !== item.h)) {
+				if (ws) {
+					updateWidget(ws.id, {
+						...widget,
+						size: { w: item.w, h: item.h },
+					});
+				}
+			}
 		});
 	}
 
 	return (
-		<ResponsiveGridLayout
+		<ReactGridLayout
 			className="layout"
-			layouts={{ lg: layout }}
-			breakpoints={{ lg: 1024, md: 768, sm: 480, xs: 0 }}
-			cols={{ lg: 10, md: 6, sm: 2, xs: 1 }}
+			layout={layout}
+			cols={10}
 			rowHeight={60}
 			isDraggable={editable}
 			isResizable={editable}
 			onLayoutChange={onLayoutChange}
-			measureBeforeMount={false}
-			useCSSTransforms={true}
-			compactType="vertical"
+			verticalCompact={false} // <-- Désactive le compactage vertical
 			preventCollision={!editable}
 			draggableHandle={editable ? ".drag-handle" : undefined}
 		>
@@ -73,10 +81,8 @@ export function WidgetsGrid({
 				>
 					{/* Optionnel : barre de drag en mode édition */}
 					{editable && (
-						<div className="flex items-center justify-between bg-muted">
-							<div className="drag-handle cursor-move px-2 py-1 bg-muted text-xs">
-								{widget.title}
-							</div>
+						<div className="flex drag-handle cursor-move items-center justify-between bg-muted">
+							<div className=" px-2 py-1 bg-muted text-xs">{widget.title}</div>
 							<div className="flex justify-end p-1">
 								<Button
 									className="text-red-300 hover:text-red-500"
@@ -92,6 +98,6 @@ export function WidgetsGrid({
 					</div>
 				</div>
 			))}
-		</ResponsiveGridLayout>
+		</ReactGridLayout>
 	);
 }

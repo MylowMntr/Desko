@@ -1,15 +1,55 @@
 import { Link } from "@tanstack/react-router";
-import { Trash2 } from "lucide-react";
+import { Download, Edit, Trash2, Upload } from "lucide-react";
+import { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Button } from "@/components/ui/button";
 import { useMylowDeskStore } from "@/store/appStore";
+import { Button } from "../ui/button";
+import {
+	Sidebar,
+	SidebarContent,
+	SidebarFooter,
+	SidebarGroup,
+	SidebarGroupContent,
+	SidebarGroupLabel,
+	SidebarHeader,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+} from "../ui/sidebar";
 
-export function Sidebar() {
+export function AppSidebar() {
 	const workspaces = useMylowDeskStore((s) => s.workspaces);
 	const activeId = useMylowDeskStore((s) => s.activeWorkspaceId);
 	const setActiveWorkspace = useMylowDeskStore((s) => s.setActiveWorkspace);
 	const addWorkspace = useMylowDeskStore((s) => s.addWorkspace);
 	const removeWorkspace = useMylowDeskStore((s) => s.removeWorkspace);
+	const renameWorkspace = useMylowDeskStore((s) => s.renameWorkspace);
+	const setState = useMylowDeskStore((s) => s.setState);
+	const fileInputRef = useRef<HTMLInputElement>(null);
+
+	// Ouvre le sélecteur de fichier
+	function handleImportClick() {
+		fileInputRef.current?.click();
+	}
+
+	// Charge le fichier JSON et met à jour le store
+	function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+		const file = e.target.files?.[0];
+		if (!file) return;
+
+		const reader = new FileReader();
+		reader.onload = (event) => {
+			try {
+				const json = event.target?.result as string;
+				const data = JSON.parse(json);
+				setState(() => data); // Remplace tout l’état (à adapter selon ta logique)
+				alert("Import réussi !");
+			} catch {
+				alert("Fichier JSON invalide");
+			}
+		};
+		reader.readAsText(file);
+	}
 
 	// Action pour créer un workspace simple
 	function handleAddWorkspace() {
@@ -37,39 +77,90 @@ export function Sidebar() {
 	}
 
 	return (
-		<aside className="w-56 bg-muted p-4 border-r flex flex-col">
-			<h2 className="font-bold mb-4">Workspaces</h2>
-			<ul className="flex-1 space-y-2 overflow-auto">
-				{workspaces.map((ws) => (
-					<li key={ws.id} className="flex items-center justify-between">
-						<Link
-							to="/w/$workspaceId"
-							params={{ workspaceId: ws.id }}
-							className={`block rounded px-2 py-1 ${
-								ws.id === activeId ? "bg-primary text-primary-foreground" : ""
-							}`}
-						>
-							{ws.name}
-						</Link>
-						<Button
-							variant="destructive"
-							size="sm"
-							onClick={() => removeWorkspace(ws.id)}
-							className="text-red-300 hover:text-red-500"
-						>
-							<Trash2 className="h-4 w-4 " />
-						</Button>
-					</li>
-				))}
-			</ul>
-			<div className="mt-4 space-y-2">
+		<Sidebar>
+			<SidebarHeader />
+			<SidebarContent>
+				<SidebarGroup>
+					<SidebarGroupLabel>Workspaces</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							{workspaces.map((ws) => (
+								<SidebarMenuItem
+									key={ws.id}
+									className="flex items-center justify-between"
+								>
+									<SidebarMenuButton asChild>
+										<div className="flex items-center justify-between w-full">
+											<Link
+												to="/w/$workspaceId"
+												params={{ workspaceId: ws.id }}
+												className={`block rounded px-2 py-1 ${
+													ws.id === activeId ? "text-primary" : ""
+												}`}
+											>
+												{ws.name}
+											</Link>
+											<div>
+												<Button
+													variant="ghost"
+													size="icon"
+													onClick={() => {
+														const newName = prompt(
+															"Renommer le workspace",
+															ws.name,
+														);
+														if (newName) {
+															renameWorkspace(ws.id, newName);
+														}
+													}}
+													className="text-muted-foreground"
+												>
+													<Edit className="h-4 w-4" />
+												</Button>
+												<Button
+													variant="destructive"
+													size="icon"
+													onClick={() => removeWorkspace(ws.id)}
+													className="text-destructive"
+												>
+													<Trash2 className="h-4 w-4" />
+												</Button>
+											</div>
+										</div>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+							))}
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+			</SidebarContent>{" "}
+			<SidebarFooter>
 				<Button onClick={handleAddWorkspace} className="w-full">
 					+ Nouveau workspace
 				</Button>
+				<div className="w-full">
+					<Button
+						variant="outline"
+						className="w-full"
+						onClick={handleImportClick}
+					>
+						<Download className="h-4 w-4 mr-2" />
+						Importer JSON
+					</Button>
+					{/* Input caché pour importer */}
+					<input
+						type="file"
+						accept="application/json"
+						ref={fileInputRef}
+						onChange={handleFileChange}
+						className="hidden"
+					/>
+				</div>
 				<Button variant="outline" onClick={handleExport} className="w-full">
+					<Upload className="h-4 w-4 mr-2" />
 					Exporter JSON
 				</Button>
-			</div>
-		</aside>
+			</SidebarFooter>
+		</Sidebar>
 	);
 }

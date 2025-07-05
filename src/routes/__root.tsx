@@ -8,7 +8,8 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { Sidebar, TopBar } from "@/components/layout";
+import { AppSidebar, TopBar } from "@/components/layout";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import appCss from "@/styles/app.css?url";
 
 export const Route = createRootRoute({
@@ -38,15 +39,17 @@ export const Route = createRootRoute({
 function RootComponent() {
 	return (
 		<RootDocument>
-			<div className="flex min-h-screen bg-background text-foreground">
-				<Sidebar />
-				<div className="flex-1 flex flex-col">
-					<TopBar />
-					<main className="flex-1 p-4 overflow-auto">
-						<Outlet />
-					</main>
+			<SidebarProvider>
+				<AppSidebar />
+				<div className="flex min-h-screen w-full bg-background text-foreground">
+					<div className="flex-1 flex flex-col">
+						<TopBar />
+						<main className="flex-1 p-4 overflow-auto">
+							<Outlet />
+						</main>
+					</div>
 				</div>
-			</div>
+			</SidebarProvider>
 		</RootDocument>
 	);
 }

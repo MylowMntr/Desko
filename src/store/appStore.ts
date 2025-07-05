@@ -22,6 +22,7 @@ interface MylowDeskStore extends AppState {
 	) => void;
 	  removeWorkspace: (workspaceId: string) => void;
   removeWidget: (workspaceId: string, widgetId: string) => void;
+	renameWorkspace: (workspaceId: string, newName: string) => void;
 }
 
 export const useMylowDeskStore = create(
@@ -43,6 +44,12 @@ export const useMylowDeskStore = create(
 					activeWorkspaceId: id,
 				})),
 
+			renameWorkspace: (workspaceId, newName) =>
+				set((state) => ({
+					workspaces: state.workspaces.map((ws) =>
+						ws.id === workspaceId ? { ...ws, name: newName } : ws
+					),
+				})),
 
 			addWidget: (workspaceId, widget) =>
 				set((state) => ({
@@ -88,24 +95,26 @@ export const useMylowDeskStore = create(
 					return typeof next === "object" ? next : {};
 				}),
 				removeWorkspace: (workspaceId) =>
-        set((state) => ({
-          workspaces: state.workspaces.filter((ws) => ws.id !== workspaceId),
-          activeWorkspaceId:
-            state.activeWorkspaceId === workspaceId ? null : state.activeWorkspaceId,
-        })),
+					set((state) => ({
+					workspaces: state.workspaces.filter((ws) => ws.id !== workspaceId),
+					activeWorkspaceId:
+						state.activeWorkspaceId === workspaceId ? null : state.activeWorkspaceId,
+					}
+				)
+			),
 
-      removeWidget: (workspaceId, widgetId) =>
-        set((state) => ({
-          workspaces: state.workspaces.map((ws) =>
-            ws.id === workspaceId
-              ? {
-                  ...ws,
-                  widgets: ws.widgets.filter((w) => w.id !== widgetId),
-                }
-              : ws
-          ),
-        })),
-		}),
+			removeWidget: (workspaceId, widgetId) =>
+					set((state) => ({
+					workspaces: state.workspaces.map((ws) =>
+						ws.id === workspaceId
+						? {
+							...ws,
+							widgets: ws.widgets.filter((w) => w.id !== widgetId),
+							}
+						: ws
+					),
+				})),
+			}),
 		{
 			name: "mylowdesk-storage", // clé localStorage
 			// (optionnel) : tu peux ajouter des options de migration ici
