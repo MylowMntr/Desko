@@ -85,11 +85,11 @@ export function WidgetsGrid({
 				>
 					{/* Optionnel : barre de drag en mode édition */}
 					{editable && (
-						<div className="flex drag-handle cursor-move items-center justify-between bg-muted">
-							<div className=" px-2  bg-muted text-sm">{widget.title}</div>
-							<div className="flex justify-end m-0.5">
+						<div className="flex p-1 px-4 drag-handle cursor-move items-center justify-between bg-muted">
+							<div className=" bg-muted text-sm">{widget.title}</div>
+							<div className="justify-end">
 								<Trash2
-									className="h-4 w-4 m-1 text-destructive cursor-pointer"
+									className="h-4 w-4 flex left-4 text-destructive cursor-pointer"
 									onClick={() => removeWidget(ws.id, widget.id)}
 								/>
 							</div>
