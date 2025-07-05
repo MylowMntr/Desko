@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { AddWidgetModal, WidgetsGrid } from "@/components/widgets/";
+import { useEffect } from "react";
+import { useWorkspaceContext } from "@/modules/context/workspace-context";
+import { WidgetsGrid } from "@/modules/widgets";
 import { useMylowDeskStore } from "@/store/appStore";
 
 export const Route = createFileRoute("/w/$workspaceId")({
@@ -10,11 +10,10 @@ export const Route = createFileRoute("/w/$workspaceId")({
 
 function WorkspacePage() {
 	const { workspaceId } = Route.useParams();
+	const { editable } = useWorkspaceContext();
 	const setActiveWorkspace = useMylowDeskStore((s) => s.setActiveWorkspace);
 	const workspaces = useMylowDeskStore((s) => s.workspaces);
 	const activeWs = workspaces.find((ws) => ws.id === workspaceId);
-	const [showModal, setShowModal] = useState(false);
-	const [editable, setEditable] = useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -26,18 +25,7 @@ function WorkspacePage() {
 
 	return (
 		<div>
-			<div className="mb-4 flex justify-between">
-				<Button onClick={() => setEditable((e) => !e)}>
-					{editable ? "Verrouiller la grille" : "Éditer la grille"}
-				</Button>
-				<Button onClick={() => setShowModal(true)}>+ Ajouter un widget</Button>
-			</div>
 			<WidgetsGrid workspaceId={activeWs.id} editable={editable} />
-			<AddWidgetModal
-				open={showModal}
-				onOpenChange={setShowModal}
-				workspaceId={activeWs.id}
-			/>
 		</div>
 	);
 }

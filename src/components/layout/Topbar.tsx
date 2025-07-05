@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useWorkspaceContext } from "@/modules/context/workspace-context";
+import { AddWidgetModal } from "@/modules/widgets";
 import { useMylowDeskStore } from "@/store/appStore";
-import { SidebarTrigger } from "../ui/sidebar";
 
 export function TopBar() {
 	const [dark, setDark] = useState(() => {
@@ -11,6 +13,8 @@ export function TopBar() {
 			window.matchMedia("(prefers-color-scheme: dark)").matches
 		);
 	});
+	const { editable, setEditable, showModal, setShowModal } =
+		useWorkspaceContext();
 
 	useEffect(() => {
 		document.documentElement.classList.toggle("dark", dark);
@@ -26,8 +30,27 @@ export function TopBar() {
 				<SidebarTrigger />
 			</div>
 			<div className="flex items-center px-3 w-full">
-				<h1 className="text-xl font-semibold flex-1">
-					{activeWs ? activeWs.name : "MylowDesk"}
+				<h1 className="text-xl font-semibold flex items-center justify-between w-full">
+					{activeWs ? (
+						<>
+							<span>{activeWs.name}</span>
+							<div className="flex items-center space-x-2">
+								<Button onClick={() => setEditable((e) => !e)}>
+									{editable ? "Verrouiller la grille" : "Éditer la grille"}
+								</Button>
+								<Button onClick={() => setShowModal(true)}>
+									+ Ajouter un widget
+								</Button>
+							</div>
+							<AddWidgetModal
+								open={showModal}
+								onOpenChange={setShowModal}
+								workspaceId={activeWs.id}
+							/>
+						</>
+					) : (
+						"MylowDesk"
+					)}
 				</h1>
 				<div className="flex space-x-2">
 					<Button

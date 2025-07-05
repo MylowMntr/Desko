@@ -2,8 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Download, Edit, Trash2, Upload } from "lucide-react";
 import { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Button } from "@/components/ui/button";
 import { useMylowDeskStore } from "@/store/appStore";
-import { Button } from "../ui/button";
 import {
 	Sidebar,
 	SidebarContent,

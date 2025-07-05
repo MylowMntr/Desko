@@ -10,6 +10,7 @@ import {
 import type { ReactNode } from "react";
 import { AppSidebar, TopBar } from "@/components/layout";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { WorkspaceProvider } from "@/modules/context/workspace-context";
 import appCss from "@/styles/app.css?url";
 
 export const Route = createRootRoute({
@@ -39,17 +40,19 @@ export const Route = createRootRoute({
 function RootComponent() {
 	return (
 		<RootDocument>
-			<SidebarProvider>
-				<AppSidebar />
-				<div className="flex min-h-screen w-full bg-background text-foreground">
-					<div className="flex-1 flex flex-col">
-						<TopBar />
-						<main className="flex-1 p-4 overflow-auto">
-							<Outlet />
-						</main>
+			<WorkspaceProvider>
+				<SidebarProvider>
+					<AppSidebar />
+					<div className="flex min-h-screen w-full bg-background text-foreground">
+						<div className="flex-1 flex flex-col">
+							<TopBar />
+							<main className="flex-1 overflow-auto">
+								<Outlet />
+							</main>
+						</div>
 					</div>
-				</div>
-			</SidebarProvider>
+				</SidebarProvider>
+			</WorkspaceProvider>
 		</RootDocument>
 	);
 }
