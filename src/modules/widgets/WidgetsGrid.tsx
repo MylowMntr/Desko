@@ -1,4 +1,7 @@
-import GridLayout, { WidthProvider } from "react-grid-layout";
+import GridLayout, {
+	type ResizeHandle,
+	WidthProvider,
+} from "react-grid-layout";
 import { useMylowDeskStore } from "@/store/appStore";
 import { WidgetRenderer } from "./WidgetRenderer";
 import "react-grid-layout/css/styles.css";
@@ -21,6 +24,7 @@ export function WidgetsGrid({
 	const removeWidget = useMylowDeskStore((s) => s.removeWidget);
 	const updateWidget = useMylowDeskStore((s) => s.updateWidget);
 	const ws = workspaces.find((w) => w.id === workspaceId);
+	const availableHandles = ["sw", "nw", "se", "ne"] as ResizeHandle[];
 
 	if (!ws) return null;
 
@@ -32,6 +36,7 @@ export function WidgetsGrid({
 		w: widget.size.w,
 		h: widget.size.h,
 		static: !editable, // widgets non déplaçables si pas en mode édition
+		resizeHandles: availableHandles,
 	}));
 
 	function onLayoutChange(
@@ -70,8 +75,8 @@ export function WidgetsGrid({
 			isResizable={editable}
 			onLayoutChange={onLayoutChange}
 			verticalCompact={false} // <-- Désactive le compactage vertical
-			preventCollision={!editable}
 			draggableHandle={editable ? ".drag-handle" : undefined}
+			preventCollision={true}
 		>
 			{ws.widgets.map((widget) => (
 				<div

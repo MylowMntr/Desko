@@ -5,6 +5,7 @@
 .react-grid-item {
   transition: all 200ms ease;
   transition-property: left, top, width, height;
+  overflow-y: auto;
 }
 .react-grid-item img {
   pointer-events: none;
@@ -20,9 +21,12 @@
 }
 
 .react-grid-item.react-draggable-dragging {
-  transition: none;
   z-index: 3;
   will-change: transform;
+  opacity: 0.5;
+  scale: 0.90;
+  transition: all;
+  transition-duration: 100ms;
 }
 
 .react-grid-item.dropping {
@@ -30,7 +34,7 @@
 }
 
 .react-grid-item.react-grid-placeholder {
-  background: var(--color-muted-foreground, red);
+  background: var(--color-muted-foreground, black);
   opacity: 0.2;
   transition-duration: 100ms;
   z-index: 2;

@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
@@ -50,6 +50,18 @@ export function TodoWidgetView({ widget }) {
 	}
 	return (
 		<div>
+			<div className="mb-1 flex gap-1">
+				<Input
+					className="flex-1 border rounded px-2 py-1 text-xs"
+					value={input}
+					onChange={(e) => setInput(e.target.value)}
+					placeholder="Nouvelle tâche"
+					onKeyDown={(e) => e.key === "Enter" && addItem()}
+				/>
+				<Button className="bg-primary  rounded text-xs" onClick={addItem}>
+					<Plus className="h-4 w-4" />
+				</Button>
+			</div>
 			<ul className="space-y-2 bg-muted p-4 rounded shadow-md">
 				{widget.config.items.map((item) => (
 					<li
@@ -72,7 +84,8 @@ export function TodoWidgetView({ widget }) {
 							{item.text}
 						</span>
 						<Button
-							className="ml-auto text-xs text-red-500 hover:text-red-700"
+							className="ml-auto text-xs text-destructive "
+							variant="destructive"
 							onClick={() => removeItem(item.id)}
 						>
 							<X className="h-4 w-4" />
@@ -80,21 +93,6 @@ export function TodoWidgetView({ widget }) {
 					</li>
 				))}
 			</ul>
-			<div className="mt-2 flex gap-2">
-				<Input
-					className="flex-1 border rounded px-2 py-1 text-xs"
-					value={input}
-					onChange={(e) => setInput(e.target.value)}
-					placeholder="Nouvelle tâche"
-					onKeyDown={(e) => e.key === "Enter" && addItem()}
-				/>
-				<Button
-					className="px-2 py-1 bg-primary text-white rounded text-xs"
-					onClick={addItem}
-				>
-					+
-				</Button>
-			</div>
 		</div>
 	);
 }
