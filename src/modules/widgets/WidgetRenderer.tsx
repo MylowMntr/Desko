@@ -1,6 +1,5 @@
 import {
 	ClockWidgetView,
-	CounterWidgetView,
 	EditableNoteView,
 	IframeWidgetView,
 	TodoWidgetView,
@@ -15,8 +14,6 @@ export function WidgetRenderer({ widget }: { widget: Widget }) {
 			return <EditableNoteView widget={widget} />;
 		case "todo":
 			return <TodoWidgetView widget={widget} />;
-		case "counter":
-			return <CounterWidgetView widget={widget} />;
 		case "clock":
 			return <ClockWidgetView widget={widget} />;
 		default:

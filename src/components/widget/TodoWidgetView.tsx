@@ -62,7 +62,7 @@ export function TodoWidgetView({ widget }) {
 					<Plus className="h-4 w-4" />
 				</Button>
 			</div>
-			<ul className="space-y-2 bg-muted p-4 rounded shadow-md">
+			<ul className="bg-muted px-2 rounded shadow-md">
 				{widget.config.items.map((item) => (
 					<li
 						key={item.id}

@@ -18,11 +18,6 @@ export const widgetDefinitions = {
     fields: [], // Pas de champ initial, items sera [] par défaut
     initialConfig: { items: [] }
   },
-  counter: {
-    label: "Compteur",
-    fields: [],
-    initialConfig: { value: 0 }
-  },
   clock: {
     label: "Horloge",
     fields: [
