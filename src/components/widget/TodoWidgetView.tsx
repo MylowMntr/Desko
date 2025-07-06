@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useWorkspaceContext } from "@/modules/context/workspace-context";
 import { useMylowDeskStore } from "@/store/appStore";
+
 export function TodoWidgetView({ widget }) {
 	const updateWidget = useMylowDeskStore((s) => s.updateWidget);
 	const { activeWorkspace } = useWorkspaceContext();

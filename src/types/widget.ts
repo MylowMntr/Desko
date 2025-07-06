@@ -1,4 +1,4 @@
-export type WidgetType = "iframe" | "note" | "todo"| "clock";
+export type WidgetType = "iframe" | "note" | "todo"| "clock" | "kanban";
 
 export interface WidgetBase {
   id: string;
@@ -26,8 +26,14 @@ export interface ClockWidget extends WidgetBase {
   config: { timezone?: string }; // optionnel
 }
 
+export interface KanbanWidget extends WidgetBase {
+  type: "kanban";
+  config: { items: { id: string; status: string; summary: string }[] };
+}
+
 export type Widget =
   | IframeWidget
   | NoteWidget
   | TodoWidget
-  | ClockWidget;
+  | ClockWidget
+  | KanbanWidget

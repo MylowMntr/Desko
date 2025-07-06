@@ -86,12 +86,18 @@ export function WidgetsGrid({
 				>
 					{/* Optionnel : barre de drag en mode édition */}
 					{editable && (
-						<div className="flex p-1 px-4 absolute w-full drag-handle cursor-move items-center justify-between bg-muted/90 drop-shadow-lg">
+						<div className="flex p-1 px-4 absolute w-full z-10 drag-handle cursor-move items-center justify-between bg-muted/90 drop-shadow-lg">
 							<div className=" text-sm">{widget.title}</div>
 							<Button
 								variant={"ghost"}
-								className="justify-end p-0 cursor-pointer"
-								onClick={() => removeWidget(ws.id, widget.id)}
+								className="justify-end p-0 cursor-pointer z-30"
+								onClick={(e) => {
+									e.stopPropagation();
+									removeWidget(ws.id, widget.id);
+								}}
+								onMouseDown={(e) => {
+									e.stopPropagation();
+								}}
 							>
 								<Trash2 className="h-4 w-4 flex left-4 text-destructive " />
 							</Button>

@@ -24,5 +24,11 @@ export const widgetDefinitions = {
       { key: "timezone", label: "Fuseau horaire", type: "text", placeholder: "Europe/Paris" }
     ],
     initialConfig: { timezone: "" }
+  },
+  kanban: {
+    label: "Kanban",
+    fields: [
+    ],
+    initialConfig: { items: [] }
   }
 } as const;
