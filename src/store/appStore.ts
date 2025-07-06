@@ -21,7 +21,7 @@ interface MylowDeskStore extends AppState {
 		) => Partial<MylowDeskStore> | MylowDeskStore,
 	) => void;
 	removeWorkspace: (workspaceId: string) => void;
-  	removeWidget: (workspaceId: string, widgetId: string) => void;
+	removeWidget: (workspaceId: string, widgetId: string) => void;
 	renameWorkspace: (workspaceId: string, newName: string) => void;
 }
 
@@ -47,7 +47,7 @@ export const useMylowDeskStore = create(
 			renameWorkspace: (workspaceId, newName) =>
 				set((state) => ({
 					workspaces: state.workspaces.map((ws) =>
-						ws.id === workspaceId ? { ...ws, name: newName } : ws
+						ws.id === workspaceId ? { ...ws, name: newName } : ws,
 					),
 				})),
 
@@ -74,7 +74,7 @@ export const useMylowDeskStore = create(
 					),
 				})),
 
-			updateWidget: (workspaceId: string, widget: Widget) => 				
+			updateWidget: (workspaceId: string, widget: Widget) =>
 				set((state) => ({
 					workspaces: state.workspaces.map((ws) =>
 						ws.id === workspaceId
@@ -94,27 +94,27 @@ export const useMylowDeskStore = create(
 					const next = typeof updater === "function" ? updater(state) : updater;
 					return typeof next === "object" ? next : {};
 				}),
-				removeWorkspace: (workspaceId) =>
-					set((state) => ({
+			removeWorkspace: (workspaceId) =>
+				set((state) => ({
 					workspaces: state.workspaces.filter((ws) => ws.id !== workspaceId),
 					activeWorkspaceId:
-						state.activeWorkspaceId === workspaceId ? null : state.activeWorkspaceId,
-					}
-				)
-			),
+						state.activeWorkspaceId === workspaceId
+							? null
+							: state.activeWorkspaceId,
+				})),
 
 			removeWidget: (workspaceId, widgetId) =>
-					set((state) => ({
+				set((state) => ({
 					workspaces: state.workspaces.map((ws) =>
 						ws.id === workspaceId
-						? {
-							...ws,
-							widgets: ws.widgets.filter((w) => w.id !== widgetId),
-							}
-						: ws
+							? {
+									...ws,
+									widgets: ws.widgets.filter((w) => w.id !== widgetId),
+								}
+							: ws,
 					),
 				})),
-			}),
+		}),
 		{
 			name: "mylowdesk-storage", // clé localStorage
 			// (optionnel) : tu peux ajouter des options de migration ici

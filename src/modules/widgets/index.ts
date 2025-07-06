@@ -1,3 +1,3 @@
 export * from "./AddWidgetModal";
 export * from "./WidgetRenderer";
-export * from "./WidgetsGrid"
+export * from "./WidgetsGrid";
