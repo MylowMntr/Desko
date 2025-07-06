@@ -9,6 +9,7 @@ import "react-resizable/css/styles.css";
 import { Trash2 } from "lucide-react";
 
 import "@/styles/react-grid.css";
+import { Button } from "@/components/ui/button";
 
 const ReactGridLayout = WidthProvider(GridLayout);
 
@@ -85,17 +86,18 @@ export function WidgetsGrid({
 				>
 					{/* Optionnel : barre de drag en mode édition */}
 					{editable && (
-						<div className="flex p-1 px-4 drag-handle cursor-move items-center justify-between bg-muted">
-							<div className=" bg-muted text-sm">{widget.title}</div>
-							<div className="justify-end">
-								<Trash2
-									className="h-4 w-4 flex left-4 text-destructive cursor-pointer"
-									onClick={() => removeWidget(ws.id, widget.id)}
-								/>
-							</div>
+						<div className="flex p-1 px-4 absolute w-full drag-handle cursor-move items-center justify-between bg-muted/90 drop-shadow-lg">
+							<div className=" text-sm">{widget.title}</div>
+							<Button
+								variant={"ghost"}
+								className="justify-end p-0 cursor-pointer"
+								onClick={() => removeWidget(ws.id, widget.id)}
+							>
+								<Trash2 className="h-4 w-4 flex left-4 text-destructive " />
+							</Button>
 						</div>
 					)}
-					<div className="flex-1 p-2">
+					<div className="flex-1 p-2 overflow-y-auto ">
 						<WidgetRenderer widget={widget} />
 					</div>
 				</div>

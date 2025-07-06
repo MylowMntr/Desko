@@ -5,7 +5,8 @@
 .react-grid-item {
   transition: all 200ms ease;
   transition-property: left, top, width, height;
-  overflow-y: auto;
+  height: fit-content;
+  /* overflow-y: auto; */
 }
 .react-grid-item img {
   pointer-events: none;

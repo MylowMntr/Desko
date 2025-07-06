@@ -1,6 +1,6 @@
 export const widgetDefinitions = {
   iframe: {
-    label: "Iframe",
+    label: "Intégration Web (Iframe)",
     fields: [
       { key: "url", label: "URL", type: "text", placeholder: "https://..." }
     ],

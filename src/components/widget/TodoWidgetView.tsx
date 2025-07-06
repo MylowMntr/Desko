@@ -63,35 +63,37 @@ export function TodoWidgetView({ widget }) {
 				</Button>
 			</div>
 			<ul className="bg-muted px-2 rounded shadow-md">
-				{widget.config.items.map((item) => (
-					<li
-						key={item.id}
-						className="flex items-center gap-4 p-2 border-b last:border-none"
-					>
-						<Input
-							type="checkbox"
-							checked={item.done}
-							onChange={() => toggleDone(item.id)}
-							className="h-4 w-4"
-						/>
-						<span
-							className={`flex-1 text-sm ${
-								item.done
-									? "line-through text-muted-foreground/50"
-									: "text-foreground"
-							}`}
+				{widget.config.items
+					.sort((a, b) => Number(a.done) - Number(b.done))
+					.map((item) => (
+						<li
+							key={item.id}
+							className="flex items-center gap-4 p-2 border-b last:border-none"
 						>
-							{item.text}
-						</span>
-						<Button
-							className="ml-auto text-xs text-destructive "
-							variant="destructive"
-							onClick={() => removeItem(item.id)}
-						>
-							<X className="h-4 w-4" />
-						</Button>
-					</li>
-				))}
+							<Input
+								type="checkbox"
+								checked={item.done}
+								onChange={() => toggleDone(item.id)}
+								className="h-4 w-4"
+							/>
+							<span
+								className={`flex-1 text-sm ${
+									item.done
+										? "line-through text-muted-foreground/50"
+										: "text-foreground"
+								}`}
+							>
+								{item.text}
+							</span>
+							<Button
+								className="ml-auto text-xs text-destructive "
+								variant="destructive"
+								onClick={() => removeItem(item.id)}
+							>
+								<X className="h-4 w-4" />
+							</Button>
+						</li>
+					))}
 			</ul>
 		</div>
 	);
