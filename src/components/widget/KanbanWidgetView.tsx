@@ -1,30 +1,15 @@
-import { Edit, Plus } from "lucide-react";
+import { Edit, Plus, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import GridLayout, { type Layout, WidthProvider } from "react-grid-layout";
 import { Button } from "@/components/ui/button";
 import { useWorkspaceContext } from "@/modules/context/workspace-context";
 import { useMylowDeskStore } from "@/store/appStore";
+import { Textarea } from "../ui/textarea";
 
 type Card = {
 	id: string;
 	title: string;
 };
-
-const initialCards: Card[] = [
-	{ id: "1", title: "Task A" },
-	{ id: "2", title: "Task B" },
-	{ id: "3", title: "Task C" },
-	{ id: "4", title: "Task D" },
-	{ id: "5", title: "Task E" },
-];
-
-const initialLayout: Layout[] = [
-	{ i: "1", x: 0, y: 0, w: 1, h: 1 },
-	{ i: "2", x: 0, y: 1, w: 1, h: 1 },
-	{ i: "3", x: 1, y: 0, w: 1, h: 1 },
-	{ i: "4", x: 2, y: 0, w: 1, h: 1 },
-	{ i: "5", x: 2, y: 1, w: 1, h: 1 },
-];
 
 const columns = ["Todo", "In Progress", "Done"];
 
@@ -33,10 +18,8 @@ const ReactGridLayout = WidthProvider(GridLayout);
 export function KanbanWidgetView({ widget }) {
 	const updateWidget = useMylowDeskStore((s) => s.updateWidget);
 	const { activeWorkspace } = useWorkspaceContext();
-	const [layout, setLayout] = useState<Layout[]>(
-		widget.config.layout || initialLayout,
-	);
-	const [cards] = useState<Card[]>(widget.config.cards || initialCards);
+	const [layout, setLayout] = useState<Layout[]>(widget.config.layout || []);
+	const [cards, setCards] = useState<Card[]>(widget.config.cards || []);
 
 	function save() {
 		if (activeWorkspace?.id) {
@@ -57,10 +40,22 @@ export function KanbanWidgetView({ widget }) {
 		return () => clearTimeout(timer); // Cleanup timer
 	}, [layout, cards]);
 
+	function addCard() {
+		const newCard: Card = {
+			id: Date.now().toString(),
+			title: "New Task",
+		};
+		setCards((prev) => [...prev, newCard]);
+	}
+
+	function deleteCard(id: string) {
+		setCards((prev) => prev.filter((card) => card.id !== id));
+	}
+
 	return (
 		<div className="">
 			<div className="absolute top-1">
-				<Button variant="ghost" onClick={save}>
+				<Button variant="ghost" onClick={addCard}>
 					<Plus className="h-4 w-4" />
 				</Button>
 				<Button variant="ghost" onClick={save}>
@@ -86,9 +81,35 @@ export function KanbanWidgetView({ widget }) {
 				{cards.map((card) => (
 					<div
 						key={card.id}
-						className="bg-muted-foreground rounded-lg shadow-md p-4 cursor-move flex items-center justify-center"
+						className="bg-input/30 rounded-lg shadow-md p-4 cursor-move flex items-center justify-center"
 					>
-						{card.title}
+						<Button
+							variant="ghost"
+							className="absolute text-destructive top-2 right-2"
+							onClick={(e) => {
+								e.stopPropagation();
+								deleteCard(card.id);
+							}}
+							onMouseDown={(e) => {
+								e.stopPropagation();
+							}}
+						>
+							<Trash className="h-4 w-4" />
+						</Button>
+						{/* {card.title} */}
+						<Textarea
+							value={card.title}
+							className="w-full h-full  border-none focus:ring-0"
+							style={{ resize: "none" }}
+							onChange={(e) => {
+								const newTitle = e.target.value;
+								setCards((prev) =>
+									prev.map((c) =>
+										c.id === card.id ? { ...c, title: newTitle } : c,
+									),
+								);
+							}}
+						/>
 					</div>
 				))}
 			</ReactGridLayout>

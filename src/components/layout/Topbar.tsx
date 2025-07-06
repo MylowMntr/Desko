@@ -36,12 +36,13 @@ export function TopBar() {
 									className={editable ? "bg-success" : ""}
 								>
 									<Grid />
-									<span>
+									<span className="hidden md:block">
 										{editable ? "Verrouiller la grille" : "Éditer la grille"}
 									</span>
 								</Button>
 								<Button onClick={() => setShowModal(true)}>
-									<Plus /> <span>Ajouter un widget</span>
+									<Plus />
+									<span className="hidden md:block">Ajouter un widget</span>
 								</Button>
 							</div>
 							<AddWidgetModal
