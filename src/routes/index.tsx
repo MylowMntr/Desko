@@ -19,5 +19,10 @@ function IndexPage() {
 		}
 	}, [workspaces, navigate]);
 
-	return <div>Bienvenue sur MylowDesk ! Crée un workspace pour commencer.</div>;
+	return (
+		<div>
+			Welcome to Desko! You can create a workspace to get started, on the left
+			sidebar.
+		</div>
+	);
 }

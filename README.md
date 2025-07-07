@@ -1,107 +1,72 @@
-## Structure de base recommandée pour TanStack Start :
+# 🚀 Desko – Project Guide
+
+![Desko Example](DeskoExample.png)
+
+Welcome to Desko! This guide will help you understand the project structure, best practices, and get started quickly.
+
+*NB: I don't claim it's perfect, but it's a great starting point for a fun and practical project!*
+
+## 🛠️ Tools Used
+
+- **TanStack Start**: Framework for React with file-based routing, SSR, and data-fetching.
+- **Zustand**: Simple and efficient state management.
+- **react-grid-layout**: For flexible widget layouts.
+- **Shadcn UI**: Modern and accessible UI components, and they look great!
+
+## 🏗️ Key Features
+
+- **Local storage-based** : All data is stored in the browser's local storage, making it fast and offline-friendly.
+- **Editable widgets...**: Users can add, remove, and edit widgets on their dashboard.
+- **...in a grid layout**: Uses `react-grid-layout` for a flexible and responsive layout, allowing users to drag and drop widgets.
+- **New widgets**: Easily add new widgets by creating new components in the `/modules/` directory. (and definitions, types, etc.)
+
+## 🗂️ Project Structure
 
 ```text
 project-root/
 ├── src/
-│   ├── routes/            # Toutes tes routes (pages + layouts)
-│   │   ├── __root.tsx     # Layout racine (obligatoire)
-│   │   ├── index.tsx      # Page d'accueil
-│   │   ├── about.tsx      # Exemple d'autre page
-│   │   └── ...            # Autres routes/pages
-│   ├── router.tsx         # Configuration du router (type-safe)
-│   ├── routeTree.gen.ts   # Généré automatiquement (ne pas éditer)
-│   ├── components/        # Composants UI réutilisables (boutons, modales…)
-│   ├── modules/           # Modules métier (workspaces, widgets…)
+│   ├── routes/            # Pages and layouts
+│   │   ├── __root.tsx     # Root layout (mandatory)
+│   │   ├── index.tsx      # Homepage
+│   │   ├── w/             # Dynamic routes
+│   │       └── $workspaceId.tsx
+│   ├── router.tsx         # Router configuration (type-safe)
+│   ├── routeTree.gen.ts   # Automatically generated (do not edit)
+│   ├── components/        # Reusable UI components
+│   ├── modules/           # Business modules (workspaces, widgets…)
 │   ├── hooks/             # Custom hooks
-│   ├── services/          # Fonctions d’accès aux données/API/server
-│   ├── store/             # Gestion d’état (Zustand, React Query…)
-│   ├── types/             # Types globaux
-│   ├── utils/             # Fonctions utilitaires
-│   └── styles/            # Fichiers CSS/Tailwind
-├── public/                # Fichiers statiques (manifest, icônes…)
-├── app.config.ts          # Config globale TanStack Start
+│   ├── store/             # State management (Zustand)
+│   ├── types/             # Global TypeScript types
+│   ├── utils/             # Utility functions
+│   └── styles/            # CSS/Tailwind
 ├── package.json
 ├── tsconfig.json
 └── README.md
 ```
 
-Cette structure suit les conventions TanStack Start, tout en gardant la modularité et la clarté d’un projet pro
+## 🚀 Quick Start
 
-## Explications & bonnes pratiques :
+1. **Install dependencies**
 
-/src/routes/ :
+   ```bash
+   npm install
+   ```
 
-- Chaque fichier .tsx = une route/page.
+2. **Develop locally**
 
-- __root.tsx = layout racine (header, sidebar, etc.), obligatoire pour TanStack Start
+   ```bash
+   npm run dev
+   ```
 
-- Pour des sous-routes, crée des sous-dossiers (ex : /src/routes/workspaces/[workspaceId].tsx).
+## 📚 Useful Resources
 
-/src/router.tsx :
+- [TanStack Start – Documentation](https://tanstack.com/start/latest/docs/framework/react/hosting)
+- [Zustand – Documentation](https://github.com/pmndrs/zustand)
+- [react-grid-layout – Documentation](https://github.com/react-grid-layout/react-grid-layout)
+- [Shadcn UI – Documentation](https://ui.shadcn.com/docs)
 
-- Configure ici ton router avec le tree généré automatiquement (routeTree.gen.ts).
+## 👋 About
 
-- Tu peux y ajouter des options globales (scrollRestoration, prefetch, etc.)
+This project follows TanStack Start conventions to ensure modularity, readability, and scalability. Feel free to adapt the structure to your business needs!
 
-/src/components/ :
-
-- Composants UI génériques et réutilisables (boutons, inputs, modales, layouts…).
-
-/src/modules/ :
-
-- Par domaine métier (ex : workspaces/, widgets/), regroupe logique, composants spécifiques, hooks, types.
-
-/src/services/ :
-
-- Fonctions pour accéder aux APIs, server functions, etc.
-
-/src/store/ :
-
-- Gestion d’état globale (Zustand, React Query, etc.).
-
-/src/types/ :
-
-- Types TypeScript globaux ou partagés.
-
-/src/utils/ :
-
-- Fonctions utilitaires pures.
-
-/public/ :
-
-- Fichiers statiques (favicon, manifest PWA, images…).
-
-Spécificités TanStack Start :
-
-- File-based routing :
-
-    - La structure des fichiers dans /src/routes/ définit automatiquement tes routes, avec typage fort et génération automatique du route tree
-
-- Server functions :
-
-    - Tu peux créer des API routes et loaders directement dans tes fichiers de route, pour SSR ou data-fetching côté serveur
-
-- Type-safety :
-
-    - Tout est typé de bout en bout, y compris les params d’URL, loaders, actions, etc.
-
-| Dossier/Fichier       | Rôle principal                                   |
-|-----------------------|-------------------------------------------------|
-| `src/routes/`         | Pages, layouts, routing automatique             |
-| `src/components/`     | UI réutilisable (générique)                     |
-| `src/modules/`        | Logique métier modulaire (workspaces, widgets, etc.) |
-| `src/services/`       | Accès aux données, APIs, server functions       |
-| `src/store/`          | Gestion d’état globale                          |
-| `src/types/`          | Types TypeScript globaux                        |
-| `src/utils/`          | Fonctions utilitaires                           |
-| `src/router.tsx`      | Config du router, typage global                 |
-| `app.config.ts`       | Config globale du projet                        |
-| `public/`             | Fichiers statiques                              |
-
-Conseils pro :
-
-- Ne surcharge pas /routes/ : déporte la logique métier dans /modules/ ou /services/.
-
-- Garde les composants de page “fins” et déléguant la logique métier.
-
-- Documente la structure dans le README pour l’onboarding.
+### Happy coding 🚀
