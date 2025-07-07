@@ -1,10 +1,14 @@
 # 🚀 Desko – Project Guide
 
-![Desko Example](DeskoExample.png)
+![Desko Example](https://desko.fly.dev/DeskoExample.png)
 
-Welcome to Desko! This guide will help you understand the project structure, best practices, and get started quickly.
+Welcome to Desko! This guide will help you understand the project structure, and get started quickly.
 
 *NB: I don't claim it's perfect, but it's a great starting point for a fun and practical project!*
+
+## 🌐 Demo or Usage if you want ^^
+
+Check out the live demo here: [Desko Demo](https://desko.fly.dev)
 
 ## 🛠️ Tools Used
 

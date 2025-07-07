@@ -10,7 +10,7 @@ export default defineConfig({
 	},
 	plugins: [
 		tsConfigPaths(),
-		tanstackStart(),
+		tanstackStart({target: 'node-server'}),
 		tailwindcss(),
 		VitePWA({
 			registerType: "autoUpdate",

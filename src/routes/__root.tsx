@@ -23,7 +23,7 @@ export const Route = createRootRoute({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "MylowDesk",
+				title: "Desko",
 			},
 		],
 		links: [
@@ -31,6 +31,7 @@ export const Route = createRootRoute({
 				rel: "stylesheet",
 				href: appCss,
 			},
+			{ rel: "icon", href: "/icon.svg" },
 		],
 	}),
 	component: RootComponent,
@@ -68,7 +69,7 @@ function RootComponent() {
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 	return (
-		<html lang="fr">
+		<html lang="en">
 			<head>
 				<HeadContent />
 			</head>
