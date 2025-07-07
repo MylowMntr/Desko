@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
+/** biome-ignore-all lint/suspicious/noExplicitAny: This is a dynamic form, so we need to use any for config */
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useMylowDeskStore } from "@/store/appStore";
+import { useDeskoStore } from "@/store/appStore";
 import type { WidgetType } from "@/types";
 import { widgetDefinitions } from "./definitions";
 
@@ -31,17 +31,15 @@ interface Props {
 }
 
 export function AddWidgetModal({ open, onOpenChange, workspaceId }: Props) {
-	const addWidget = useMylowDeskStore((s) => s.addWidget);
+	const addWidget = useDeskoStore((s) => s.addWidget);
 
 	const widgetTypes = Object.keys(widgetDefinitions) as WidgetType[];
 	const [type, setType] = useState<WidgetType>(widgetTypes[0]);
 	const [title, setTitle] = useState("");
-	// Stocke dynamiquement la config selon le type
 	const [config, setConfig] = useState<any>(
 		widgetDefinitions[type].initialConfig,
 	);
 
-	// Quand on change de type, on reset la config
 	function handleTypeChange(newType: WidgetType) {
 		setType(newType);
 		setConfig(widgetDefinitions[newType].initialConfig);
@@ -91,7 +89,7 @@ export function AddWidgetModal({ open, onOpenChange, workspaceId }: Props) {
 						</SelectContent>
 					</Select>
 					<Input
-						placeholder="Titre"
+						placeholder="Title"
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
 					/>
@@ -116,7 +114,7 @@ export function AddWidgetModal({ open, onOpenChange, workspaceId }: Props) {
 					))}
 				</div>
 				<DialogFooter>
-					<Button onClick={handleAdd}>Ajouter</Button>
+					<Button onClick={handleAdd}>Add</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

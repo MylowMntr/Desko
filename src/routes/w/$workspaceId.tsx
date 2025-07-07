@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useWorkspaceContext } from "@/modules/context/workspace-context";
 import { WidgetsGrid } from "@/modules/widgets";
-import { useMylowDeskStore } from "@/store/appStore";
+import { useDeskoStore } from "@/store/appStore";
 
 export const Route = createFileRoute("/w/$workspaceId")({
 	component: WorkspacePage,
@@ -11,8 +11,8 @@ export const Route = createFileRoute("/w/$workspaceId")({
 function WorkspacePage() {
 	const { workspaceId } = Route.useParams();
 	const { editable, setActiveWorkspace } = useWorkspaceContext();
-	const setTheActiveWorkspace = useMylowDeskStore((s) => s.setActiveWorkspace);
-	const workspaces = useMylowDeskStore((s) => s.workspaces);
+	const setTheActiveWorkspace = useDeskoStore((s) => s.setActiveWorkspace);
+	const workspaces = useDeskoStore((s) => s.workspaces);
 	const activeWs = workspaces.find((ws) => ws.id === workspaceId);
 	const navigate = useNavigate();
 

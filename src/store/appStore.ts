@@ -1,11 +1,8 @@
-// /app/store/appStore.ts
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { AppState, Widget, Workspace } from "@/types";
 
-// Typage du store Zustand
-interface MylowDeskStore extends AppState {
+interface DeskoStore extends AppState {
 	addWorkspace: (ws: Workspace) => void;
 	setActiveWorkspace: (id: string) => void;
 	addWidget: (workspaceId: string, widget: Widget) => void;
@@ -16,17 +13,15 @@ interface MylowDeskStore extends AppState {
 	) => void;
 	updateWidget: (workspaceId: string, widget: Widget) => void;
 	setState: (
-		updater: (
-			state: MylowDeskStore,
-		) => Partial<MylowDeskStore> | MylowDeskStore,
+		updater: (state: DeskoStore) => Partial<DeskoStore> | DeskoStore,
 	) => void;
 	removeWorkspace: (workspaceId: string) => void;
 	removeWidget: (workspaceId: string, widgetId: string) => void;
 	renameWorkspace: (workspaceId: string, newName: string) => void;
 }
 
-export const useMylowDeskStore = create(
-	persist<MylowDeskStore>(
+export const useDeskoStore = create(
+	persist<DeskoStore>(
 		(set) => ({
 			// --- State initial ---
 			workspaces: [],
@@ -88,12 +83,12 @@ export const useMylowDeskStore = create(
 					),
 				})),
 
-			// Permet de remplacer tout l’état (pour l’import JSON)
 			setState: (updater) =>
 				set((state) => {
 					const next = typeof updater === "function" ? updater(state) : updater;
 					return typeof next === "object" ? next : {};
 				}),
+
 			removeWorkspace: (workspaceId) =>
 				set((state) => ({
 					workspaces: state.workspaces.filter((ws) => ws.id !== workspaceId),
@@ -116,8 +111,8 @@ export const useMylowDeskStore = create(
 				})),
 		}),
 		{
-			name: "mylowdesk-storage", // clé localStorage
-			// (optionnel) : tu peux ajouter des options de migration ici
+			name: "desko-storage", // localStorage key
+			// (optional) : you can add migration options here
 		},
 	),
 );

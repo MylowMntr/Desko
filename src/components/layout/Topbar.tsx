@@ -7,7 +7,6 @@ import { AddWidgetModal } from "@/modules/widgets";
 
 export function TopBar() {
 	const [dark, setDark] = useState(() => {
-		// Par défaut, détecte le thème système
 		return (
 			typeof window !== "undefined" &&
 			window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -37,12 +36,12 @@ export function TopBar() {
 								>
 									<Grid />
 									<span className="hidden md:block">
-										{editable ? "Verrouiller la grille" : "Éditer la grille"}
+										{editable ? "Lock Grid" : "Edit Grid"}
 									</span>
 								</Button>
 								<Button onClick={() => setShowModal(true)}>
 									<Plus />
-									<span className="hidden md:block">Ajouter un widget</span>
+									<span className="hidden md:block">Add Widget</span>
 								</Button>
 							</div>
 							<AddWidgetModal
@@ -52,7 +51,7 @@ export function TopBar() {
 							/>
 						</>
 					) : (
-						"MylowDesk"
+						"Desko"
 					)}
 				</h1>
 				<div className="flex space-x-2">

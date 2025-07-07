@@ -1,13 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { useMylowDeskStore } from "@/store/appStore";
+import { useDeskoStore } from "@/store/appStore";
 
 export const Route = createFileRoute("/")({
 	component: IndexPage,
 });
 
 function IndexPage() {
-	const workspaces = useMylowDeskStore((s) => s.workspaces);
+	const workspaces = useDeskoStore((s) => s.workspaces);
 	const navigate = useNavigate();
 
 	useEffect(() => {

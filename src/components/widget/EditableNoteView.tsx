@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { useWorkspaceContext } from "@/modules/context/workspace-context";
-import { useMylowDeskStore } from "@/store/appStore";
+import { useDeskoStore } from "@/store/appStore";
 export function EditableNoteView({ widget }) {
-	const updateWidget = useMylowDeskStore((s) => s.updateWidget);
+	const updateWidget = useDeskoStore((s) => s.updateWidget);
 	const { activeWorkspace } = useWorkspaceContext();
 	const [content, setContent] = useState(widget.config.content);
 
@@ -17,13 +17,13 @@ export function EditableNoteView({ widget }) {
 		}
 	}
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <-- This effect is only for saving the content after a delay -->
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			save();
 		}, 700);
-		return () => clearTimeout(timer); // Nettoyage du timer
-	}, [content]); // Sauvegarde à chaque changement de contenu
+		return () => clearTimeout(timer); // Cleanup the timer
+	}, [content]); // Save on content change
 
 	return (
 		<Textarea
@@ -31,7 +31,7 @@ export function EditableNoteView({ widget }) {
 			value={content}
 			onChange={(e) => setContent(e.target.value)}
 			onBlur={save}
-			placeholder="Écris ta note ici..."
+			placeholder="Write your note here..."
 		/>
 	);
 }

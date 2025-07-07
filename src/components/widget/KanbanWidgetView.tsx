@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import GridLayout, { type Layout, WidthProvider } from "react-grid-layout";
 import { Button } from "@/components/ui/button";
 import { useWorkspaceContext } from "@/modules/context/workspace-context";
-import { useMylowDeskStore } from "@/store/appStore";
+import { useDeskoStore } from "@/store/appStore";
 import { Textarea } from "../ui/textarea";
 
 type Card = {
@@ -16,7 +16,7 @@ const columns = ["Todo", "In Progress", "Done"];
 const ReactGridLayout = WidthProvider(GridLayout);
 
 export function KanbanWidgetView({ widget }) {
-	const updateWidget = useMylowDeskStore((s) => s.updateWidget);
+	const updateWidget = useDeskoStore((s) => s.updateWidget);
 	const { activeWorkspace } = useWorkspaceContext();
 	const [layout, setLayout] = useState<Layout[]>(widget.config.layout || []);
 	const [cards, setCards] = useState<Card[]>(widget.config.cards || []);
@@ -32,7 +32,7 @@ export function KanbanWidgetView({ widget }) {
 		}
 	}
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: false
+	// biome-ignore lint/correctness/useExhaustiveDependencies: // This effect is only for saving the layout and cards after a delay
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			save();
@@ -96,7 +96,6 @@ export function KanbanWidgetView({ widget }) {
 						>
 							<Trash className="h-4 w-4" />
 						</Button>
-						{/* {card.title} */}
 						<Textarea
 							value={card.title}
 							className="w-full h-full  border-none focus:ring-0"

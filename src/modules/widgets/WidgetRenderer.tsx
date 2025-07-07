@@ -20,6 +20,6 @@ export function WidgetRenderer({ widget }: { widget: Widget }) {
 		case "kanban":
 			return <KanbanWidgetView widget={widget} />;
 		default:
-			return <div>Widget inconnu</div>;
+			return <div>Widget unknown</div>;
 	}
 }

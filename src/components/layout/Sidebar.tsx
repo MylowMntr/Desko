@@ -3,7 +3,7 @@ import { Download, Edit, Trash2, Upload } from "lucide-react";
 import { useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
-import { useMylowDeskStore } from "@/store/appStore";
+import { useDeskoStore } from "@/store/appStore";
 import {
 	Sidebar,
 	SidebarContent,
@@ -18,21 +18,21 @@ import {
 } from "../ui/sidebar";
 
 export function AppSidebar() {
-	const workspaces = useMylowDeskStore((s) => s.workspaces);
-	const activeId = useMylowDeskStore((s) => s.activeWorkspaceId);
-	const setActiveWorkspace = useMylowDeskStore((s) => s.setActiveWorkspace);
-	const addWorkspace = useMylowDeskStore((s) => s.addWorkspace);
-	const removeWorkspace = useMylowDeskStore((s) => s.removeWorkspace);
-	const renameWorkspace = useMylowDeskStore((s) => s.renameWorkspace);
-	const setState = useMylowDeskStore((s) => s.setState);
+	const workspaces = useDeskoStore((s) => s.workspaces);
+	const activeId = useDeskoStore((s) => s.activeWorkspaceId);
+	const setActiveWorkspace = useDeskoStore((s) => s.setActiveWorkspace);
+	const addWorkspace = useDeskoStore((s) => s.addWorkspace);
+	const removeWorkspace = useDeskoStore((s) => s.removeWorkspace);
+	const renameWorkspace = useDeskoStore((s) => s.renameWorkspace);
+	const setState = useDeskoStore((s) => s.setState);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	// Ouvre le sélecteur de fichier
+	// Load the file input when the import button is clicked
 	function handleImportClick() {
 		fileInputRef.current?.click();
 	}
 
-	// Charge le fichier JSON et met à jour le store
+	// Load the JSON file and update the store
 	function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const file = e.target.files?.[0];
 		if (!file) return;
@@ -42,16 +42,16 @@ export function AppSidebar() {
 			try {
 				const json = event.target?.result as string;
 				const data = JSON.parse(json);
-				setState(() => data); // Remplace tout l’état (à adapter selon ta logique)
-				alert("Import réussi !");
+				setState(() => data); // Replace the state (adapt according to your logic)
+				alert("Import successful!");
 			} catch {
-				alert("Fichier JSON invalide");
+				alert("Invalid JSON file");
 			}
 		};
 		reader.readAsText(file);
 	}
 
-	// Action pour créer un workspace simple
+	// Create a new workspace with a unique ID and default name
 	function handleAddWorkspace() {
 		const newWs = {
 			id: uuidv4(),
@@ -62,16 +62,16 @@ export function AppSidebar() {
 		setActiveWorkspace(newWs.id);
 	}
 
-	// Action pour exporter l’état JSON
+	// Export the current state as a JSON file
 	function handleExport() {
-		const state = useMylowDeskStore.getState();
+		const state = useDeskoStore.getState();
 		const json = JSON.stringify(state, null, 2);
-		// Téléchargement simple
+		// Simple download
 		const blob = new Blob([json], { type: "application/json" });
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement("a");
 		a.href = url;
-		a.download = "mylowdesk-export.json";
+		a.download = "desko-export.json";
 		a.click();
 		URL.revokeObjectURL(url);
 	}
@@ -135,7 +135,7 @@ export function AppSidebar() {
 			</SidebarContent>{" "}
 			<SidebarFooter>
 				<Button onClick={handleAddWorkspace} className="w-full">
-					+ Nouveau workspace
+					+ New Workspace
 				</Button>
 				<div className="w-full">
 					<Button
@@ -144,9 +144,9 @@ export function AppSidebar() {
 						onClick={handleImportClick}
 					>
 						<Download className="h-4 w-4 mr-2" />
-						Importer JSON
+						Import JSON
 					</Button>
-					{/* Input caché pour importer */}
+					{/* Hidden input for importing JSON */}
 					<input
 						type="file"
 						accept="application/json"
@@ -157,7 +157,7 @@ export function AppSidebar() {
 				</div>
 				<Button variant="outline" onClick={handleExport} className="w-full">
 					<Upload className="h-4 w-4 mr-2" />
-					Exporter JSON
+					Export JSON
 				</Button>
 			</SidebarFooter>
 		</Sidebar>

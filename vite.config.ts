@@ -15,10 +15,10 @@ export default defineConfig({
 		VitePWA({
 			registerType: "autoUpdate",
 			manifest: {
-				name: "MylowDesk",
-				short_name: "MylowDesk",
-				description: "Un dashboard modulaire, multi-workspaces, offline.",
-				theme_color: "#18181b", // adapte selon ton thème
+				name: "Desko",
+				short_name: "Desko",
+				description: "A modular, multi-workspace, offline dashboard.",
+				theme_color: "#6e56cf",
 				background_color: "#ffffff",
 				display: "standalone",
 				icons: [
@@ -32,7 +32,6 @@ export default defineConfig({
 						sizes: "512x512",
 						type: "image/png",
 					},
-					// Optionnel: icône maskable
 					{
 						src: "/icons/icon-512x512.png",
 						sizes: "512x512",
@@ -42,7 +41,6 @@ export default defineConfig({
 				],
 			},
 			workbox: {
-				// Cache les assets et pages pour le mode offline
 				globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
 			},
 		}),

@@ -4,10 +4,10 @@ import { v4 as uuidv4 } from "uuid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useWorkspaceContext } from "@/modules/context/workspace-context";
-import { useMylowDeskStore } from "@/store/appStore";
+import { useDeskoStore } from "@/store/appStore";
 
 export function TodoWidgetView({ widget }) {
-	const updateWidget = useMylowDeskStore((s) => s.updateWidget);
+	const updateWidget = useDeskoStore((s) => s.updateWidget);
 	const { activeWorkspace } = useWorkspaceContext();
 	const [input, setInput] = useState("");
 
@@ -56,7 +56,7 @@ export function TodoWidgetView({ widget }) {
 					className="flex-1 border rounded px-2 py-1 text-xs"
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					placeholder="Nouvelle tâche"
+					placeholder="Add a new task..."
 					onKeyDown={(e) => e.key === "Enter" && addItem()}
 				/>
 				<Button className="bg-primary  rounded text-xs" onClick={addItem}>

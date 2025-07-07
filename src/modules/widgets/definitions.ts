@@ -1,34 +1,34 @@
 export const widgetDefinitions = {
 	iframe: {
-		label: "Intégration Web (Iframe)",
+		label: "Web integration (Iframe)",
 		fields: [
 			{ key: "url", label: "URL", type: "text", placeholder: "https://..." },
 		],
 		initialConfig: { url: "" },
 	},
 	note: {
-		label: "Note éditable",
+		label: "Editable note",
 		fields: [
 			{
 				key: "content",
-				label: "Contenu",
+				label: "Content",
 				type: "textarea",
-				placeholder: "Votre note...",
+				placeholder: "Your note...",
 			},
 		],
 		initialConfig: { content: "" },
 	},
 	todo: {
 		label: "To-do list",
-		fields: [], // Pas de champ initial, items sera [] par défaut
+		fields: [], // No initial field, items will be [] by default
 		initialConfig: { items: [] },
 	},
 	clock: {
-		label: "Horloge",
+		label: "Clock",
 		fields: [
 			{
 				key: "timezone",
-				label: "Fuseau horaire",
+				label: "Timezone",
 				type: "text",
 				placeholder: "Europe/Paris",
 			},
